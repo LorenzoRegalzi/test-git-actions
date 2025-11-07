@@ -1,59 +1,61 @@
-"use client"
-import { useState } from "react";
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [token, setToken] = useState(null);
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  async function handleLogin(e:any) {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
-    setMessage("Loading...");
+    setError('');
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Unknown error");
-      setToken(data.token);
-      setMessage("✅ Login riuscito!");
+
+      if (res.ok) {
+        router.push('/products');
+      } else {
+        setError(data.error || 'Errore di autenticazione');
+      }
     } catch (err) {
-      setMessage("❌ " + "err.message");
+      console.error(err);
+      setError('Errore di rete');
     }
-  }
+  };
 
   return (
-    <main style={{ maxWidth: 400, margin: "2rem auto", fontFamily: "sans-serif" }}>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
+    <main className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-2xl font-bold mb-4">Login</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-64">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ display: "block", width: "100%", marginBottom: 10 }}
+          className="border rounded p-2"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ display: "block", width: "100%", marginBottom: 10 }}
+          className="border rounded p-2"
         />
-        <button type="submit">Accedi</button>
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        <button type="submit" className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700">
+          Login
+        </button>
       </form>
-      {message && <p>{message}</p>}
-      {token && (
-        <div style={{ marginTop: 20 }}>
-          <strong>Token JWT:</strong>
-          <pre style={{ overflowX: "auto", background: "#eee", padding: 10 }}>{token}</pre>
-        </div>
-      )}
     </main>
   );
 }

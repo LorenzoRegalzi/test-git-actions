@@ -1,28 +1,46 @@
-import { Router } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import express from 'express';
+import bcrypt from 'bcrypt';
+import prisma from '../prismaClient.js';
 
-const router = Router();
+const router = express.Router();
 
-const users = []; // esempio in memoria — poi potrai usare un DB
-
-router.post("/register", async (req, res) => {
+// Register
+router.post('/register', async (req, res) => {
   const { email, password } = req.body;
-  if (users.find(u => u.email === email))
-    return res.status(400).json({ error: "User already exists" });
-  const hash = await bcrypt.hash(password, 10);
-  users.push({ email, password: hash });
-  res.status(201).json({ message: "User registered" });
+
+  try {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) return res.status(400).json({ error: 'Email già registrata' });
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: { email, passwordHash },
+    });
+
+    res.status(201).json({ message: 'Registrazione completata', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore server' });
+  }
 });
 
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = users.find(u => u.email === email);
-  if (!user) return res.status(400).json({ error: "Invalid credentials" });
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(400).json({ error: "Invalid credentials" });
-  const token = jwt.sign({ email }, process.env.JWT_SECRET || "secret", { expiresIn: "1h" });
-  res.json({ token });
+
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if (!valid) return res.status(401).json({ error: 'Password errata' });
+
+    res.json({ message: 'Login effettuato', user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Errore server' });
+  }
 });
+
 
 export default router;
+
