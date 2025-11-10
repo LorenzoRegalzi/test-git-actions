@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError("");
 
@@ -19,14 +19,14 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) throw new Error("Credenziali non valide");
+      if (!res.ok) throw new Error("Invalid credentials");
       const data = await res.json();
 
-      console.log("✅ Login riuscito:", data);
+      console.log("✅ Login successful:", data);
       router.push("/products");
     } catch (err) {
       console.error(err);
-      setError("Email o password errati");
+      setError("Incorrect email or password");
     }
   };
 
@@ -52,7 +52,7 @@ export default function LoginPage() {
             required
           />
           <button type="submit" className="primary">
-            Accedi
+            Sign In
           </button>
         </form>
       </div>

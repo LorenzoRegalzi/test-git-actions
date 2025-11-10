@@ -9,7 +9,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -21,20 +21,20 @@ export default function RegisterPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) throw new Error("Errore durante la registrazione");
+      if (!res.ok) throw new Error("Error during registration");
 
-      setSuccess("Registrazione completata!");
+      setSuccess("Registration successful!");
       router.push("/login");
     } catch (err) {
       console.error(err);
-      setError("Impossibile completare la registrazione");
+      setError("Unable to complete registration");
     }
   };
 
   return (
     <main>
       <div className="container">
-        <h1>Registrati</h1>
+        <h1>Register</h1>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
 
@@ -54,7 +54,7 @@ export default function RegisterPage() {
             required
           />
           <button type="submit" className="primary">
-            Crea Account
+            Create Account
           </button>
         </form>
       </div>

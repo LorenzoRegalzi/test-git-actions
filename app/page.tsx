@@ -4,14 +4,14 @@ export default function Home() {
   return (
     <main className="home">
       <div className="home-content">
-        <h1 className="home-title">🎉 Benvenuto nel mondo dei Funko Pops!</h1>
+        <h1 className="home-title">🎉 Welcome to the world of Funko Pops!</h1>
         <p className="home-subtitle">
-          Esplora la nostra collezione unica di personaggi iconici e inizia a collezionare oggi stesso.
+          Explore our unique collection of iconic characters and start collecting today.
         </p>
 
         <div className="home-buttons">
           <Link href="/register">
-            <button className="btn primary">Registrati</button>
+            <button className="btn primary">Register</button>
           </Link>
           <Link href="/login">
             <button className="btn primary">Login</button>
