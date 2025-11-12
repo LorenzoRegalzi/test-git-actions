@@ -217,3 +217,73 @@ button.secondary:hover {
   background-color: #e73370;
 }
 
+/* ===========================
+   🛒 Cart Sidebar
+   =========================== */
+
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.cart-close {
+  margin-bottom: 1rem;
+}
+
+.cart-item {
+  margin-bottom: 1rem;
+}
+
+.cart-sidebar.open {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.cart-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-sidebar li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.cart-sidebar button {
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* Overlay for when sidebar is open */
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 900;
+  display: none;
+}
+
+.cart-overlay.show {
+  display: block;
+}
