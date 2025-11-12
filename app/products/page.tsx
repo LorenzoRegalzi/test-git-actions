@@ -1,9 +1,37 @@
+// app/products/page.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+
+interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price: string;
+  imageUrl?: string;
+}
+
 export default function ProductsPage() {
-  const products = [
-    { id: 1, name: "Product 1", price: "19.99", image: "/placeholder.png" },
-    { id: 2, name: "Product 2", price: "29.99", image: "/placeholder.png" },
-    { id: 3, name: "Product 3", price: "39.99", image: "/placeholder.png" },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+        if (!res.ok) throw new Error("Failed to fetch products");
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        setError("Unable to load products");
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  if (error) {
+    return <main><p style={{ color: "red" }}>{error}</p></main>;
+  }
 
   return (
     <main>
@@ -11,10 +39,10 @@ export default function ProductsPage() {
       <div className="products-grid">
         {products.map((p) => (
           <div key={p.id} className="product-card">
-            <img src={p.image} alt={p.name} />
+            <img src={p.imageUrl ?? "/placeholder.png"} alt={p.name} />
             <h3>{p.name}</h3>
             <p>€{p.price}</p>
-            <button className="primary">Add to Cart</button>
+            <button className="btn primary">Add to Cart</button>
           </div>
         ))}
       </div>

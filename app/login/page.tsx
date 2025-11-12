@@ -22,7 +22,6 @@ export default function LoginPage() {
       if (!res.ok) throw new Error("Invalid credentials");
       const data = await res.json();
 
-      console.log("✅ Login successful:", data);
       router.push("/products");
     } catch (err) {
       console.error(err);
