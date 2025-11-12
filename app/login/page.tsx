@@ -22,13 +22,11 @@ export default function LoginPage() {
       if (!res.ok) throw new Error("Invalid credentials");
       const data = await res.json();
 
-      console.warn("data",data)
       if (!data.user.id) throw new Error("Invalid user");
       localStorage.setItem("userId", data.user.id);
 
       router.push("/products");
     } catch (err) {
-      console.error(err);
       setError("Incorrect email or password");
     }
   };

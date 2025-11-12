@@ -28,7 +28,6 @@ const [loadingOrder, setLoadingOrder] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
-    console.warn("storedUserId",storedUserId)
     if (!storedUserId) {
       router.push("/login");
     } else {
@@ -101,7 +100,6 @@ const [loadingOrder, setLoadingOrder] = useState(false);
     setCart([]);
     setSidebarOpen(false);
   } catch (err) {
-    console.error(err);
     alert("Failed to place order");
   } finally {
     setLoadingOrder(false); // stop loader
