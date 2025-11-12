@@ -1,6 +1,7 @@
 import express from 'express';
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
+import orderRoutes from './routes/order.js';
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -17,6 +18,8 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
+
 
 app.get('/', (req, res) => res.send('Backend online 🚀'));
 
